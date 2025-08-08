@@ -1,0 +1,9 @@
+polars
+numpy
+requests
+scikit-learn
+statsmodels>=0.14.0
+tensorflow
+matplotlib
+joblib
+python-dateutil
