@@ -124,3 +124,4 @@ After running predictions:
 - For LSTM functionality, TensorFlow must be installed
 - VECM requires statsmodels v0.14.0 or newer
 - Predictions are made for buy prices only
+- Also special thanks to @303entity303 for inspiring me, though this script is an independant project that didnt quite used his repo. 
