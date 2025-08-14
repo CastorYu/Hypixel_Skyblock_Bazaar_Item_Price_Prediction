@@ -1,127 +1,99 @@
-# Hypixel Skyblock Bazaar Price Prediction
+# Hypixel Skyblock Bazaar Item Price Prediction
 
-This project provides tools to collect and predict prices for items in the Hypixel Skyblock Bazaar marketplace. It uses time series forecasting models including VECM, ARIMA, and LSTM to predict future item prices.
+This project implements a machine learning-based prediction system for item prices in the Hypixel Skyblock Bazaar. It uses multiple prediction models including VECM (Vector Error Correction Model), ARIMA (Autoregressive Integrated Moving Average), and LSTM (Long Short-Term Memory) to forecast both buy and sell prices of items.
 
 ## Features
 
-- **Data Collection**: Continuously fetches live Bazaar data from the Hypixel API
-- **Price Prediction**: Forecasts future prices using integrated machine learning models
-- **Multiple Models**: Uses VECM (Vector Error Correction Model), ARIMA, and LSTM neural networks
-- **Visualization**: Generates plots showing historical prices and predictions
-- **Model Persistence**: Saves trained models for future use
+- Multiple prediction models:
+  - VECM (Vector Error Correction Model)
+  - ARIMA (Autoregressive Integrated Moving Average)
+  - LSTM (Long Short-Term Memory Neural Network)
+  - Ensemble model combining ARIMA and LSTM predictions
+  - Constant/Naive model for items with stable prices
+- Automated model selection based on in-sample MAE (Mean Absolute Error)
+- Price predictions for both buy and sell prices
+- Visualization of predictions through plots
+- Comprehensive logging system
+- Command-line interface for easy use
 
 ## Requirements
 
-- Python 3.9+
-- Hypixel API key (free from Hypixel website)
-- Required Python packages (install via `pip install -r requirements.txt`)
+- Python 3.x
+- Required packages (install via `pip install -r requirements.txt`):
+  - polars
+  - numpy
+  - requests
+  - scikit-learn
+  - statsmodels
+  - tensorflow
+  - matplotlib
+  - joblib
+  - python-dateutil
 
-## Installation
+## Project Structure
 
-1. Clone the repository:
-```bash
-git clone https://github.com/CastorYu/Hypixel_Skyblock_Bazaar_Item_Price_Prediction.git
-cd Hypixel_Skyblock_Bazaar_Item_Price_Prediction
 ```
-
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
+©À©¤©¤ main.py                 # Main CLI script for integrated price prediction
+©À©¤©¤ collect.py             # Data collection script
+©À©¤©¤ models/
+©¦   ©À©¤©¤ arima_model.py     # ARIMA model implementation
+©¦   ©À©¤©¤ lstm_model.py      # LSTM model implementation
+©¦   ©À©¤©¤ vecm_model.py      # VECM model implementation
+©¦   ©¸©¤©¤ constant_model.py  # Constant/Naive model for stable prices
+©À©¤©¤ utils/
+©¦   ©À©¤©¤ data_processing.py # Data processing utilities
+©¦   ©À©¤©¤ datetime_utils.py  # DateTime handling utilities
+©¦   ©¸©¤©¤ plotting.py        # Plotting utilities
+©¸©¤©¤ requirements.txt       # Python package dependencies
 ```
 
 ## Usage
 
-### 1. Data Collection
-Run the data collector to gather Bazaar data:
-```bash
-python collect.py
-```
-- Enter your Hypixel API key when prompted
-- Data will be saved to `bazaar_data.jsonl` every 20 seconds
-- Press `Ctrl+C` to stop collection
+1. Install the required dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-### 2. Price Prediction
-Predict future prices for an item:
-```bash
-python cli.py [ITEM_ID] [OPTIONS]
-```
+2. Run the prediction script for a specific item:
+   ```bash
+   python main.py ITEM_ID [--data-file DATA_FILE] [--periods PERIODS] [--debug] [--graph]
+   ```
 
-**Examples:**
-```bash
-# Predict ENCHANTED_DIAMOND prices for next 24 hours
-python cli.py ENCHANTED_DIAMOND
+   Arguments:
+   - `ITEM_ID`: The ID of the item to predict (e.g., ENCHANTED_DIAMOND)
+   - `--data-file`: Path to the input NDJSON data file (default: bazaar_data.jsonl)
+   - `--periods`: Number of future periods (hours) to predict (default: 24)
+   - `--debug`: Enable debug logging
+   - `--graph`: Generate and save plots
 
-# Predict ENCHANTED_GOLD prices for next 48 hours
-python cli.py ENCHANTED_GOLD --periods 48
+## Output
 
-# Use debug mode
-python cli.py ENCHANTED_IRON --debug
-```
+The script generates several outputs:
 
-**Options:**
-- `--data-file`: Custom data file path (default: `bazaar_data.jsonl`)
-- `--periods`: Hours to predict (default: 24)
-- `--debug`: Enable debug logging
+1. Predictions are saved in the `integrated_predictions` directory as JSON files
+2. Model files are saved in the `integrated_models` directory
+3. Plots are saved in the `integrated_plots` directory (when --graph is enabled)
+4. Console output showing predicted prices with color-coded buy/sell values
+5. Detailed logs in `cli.log`
 
-## File Structure
+## Example Output Format
 
 ```
-Skyblock_Price_Prediction/
-â”œâ”€â”€ cli.py               # Price prediction CLI tool
-â”œâ”€â”€ collect.py           # Data collection script
-â”œâ”€â”€ README.md            # Project documentation (this file)
-â”œâ”€â”€ requirements.txt     # Python dependencies
-â”œâ”€â”€ integrated_models/   # Saved machine learning models
-â”œâ”€â”€ integrated_plots/    # Generated price prediction plots
-â””â”€â”€ integrated_predictions/  # JSON prediction results
-
+Predicted prices for ITEM_ID (Best Model: ARIMA, In-Sample MAE (buy): 0.1234):
+  Time                 | Buy Price    | Sell Price  
+----------------------------------------
+  2024-01-01 00:00:00 |      100.50  |       98.25
+  2024-01-01 01:00:00 |      101.75  |       99.00
+  ...
 ```
-
-## Models Overview
-
-The prediction system uses a hierarchical approach:
-
-1. **Constant Price Check**: For items with stable prices
-2. **VECM (Vector Error Correction Model)**: For items with correlated price/volume data
-3. **ARIMA-LSTM Ensemble**: Combined predictions from:
-   - ARIMA (AutoRegressive Integrated Moving Average)
-   - LSTM (Long Short-Term Memory) neural network
-
-### Model Selection Logic:
-- First attempts VECM for items with sufficient correlated features
-- Falls back to ARIMA-LSTM ensemble if VECM fails
-- Uses simple average for constant price items
-
-## Dependencies
-
-The project requires these Python packages:
-
-```
-polars
-numpy
-requests
-scikit-learn
-statsmodels
-tensorflow (optional for LSTM)
-matplotlib
-joblib
-python-dateutil
-```
-
-All dependencies are listed in `requirements.txt`.
-
-## Output Files
-
-After running predictions:
-- **integrated_predictions/[ITEM_ID].json**: JSON file with prediction data
-- **integrated_plots/[ITEM_ID].png**: Price history and prediction plot
-- **integrated_models/**: Trained model files (ARIMA, LSTM, VECM)
 
 ## Notes
 
-- The script may contain bugs as it is written by hand and annotated using Qwen-3-Coder.
-- This README is generated by Deepseek-R1-0528. 
-- For LSTM functionality, TensorFlow must be installed
-- VECM requires statsmodels v0.14.0 or newer
-- Predictions are made for buy prices only
-- Also special thanks to @303entity303 for inspiring me, though this script is an independant project that didnt quite used his repo. 
+- The system automatically selects the best model based on the lowest in-sample MAE for buy prices
+- For items with constant/stable prices, a simple naive prediction model is used
+- All predictions include both buy and sell prices when available
+- The project uses colored console output when available (through termcolor package)
+
+## Contributing
+
+Feel free to submit issues and enhancement requests!

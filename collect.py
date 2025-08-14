@@ -5,13 +5,13 @@ import os
 from datetime import datetime
 
 # Configuration
-API_KEY = input("API_key: ")  # Replace with your actual Hypixel API key
+#API_KEY = input("API_key: ")   Replace with your actual Hypixel API key
 OUTPUT_FILE = "bazaar_data.jsonl"
 SAVE_INTERVAL = 20  # seconds
 
 def fetch_bazaar_data():
     """Fetches current bazaar data from Hypixel API"""
-    url = f"https://api.hypixel.net/skyblock/bazaar?key={API_KEY}"
+    url = f"https://api.hypixel.net/skyblock/bazaar"
     response = requests.get(url)
     
     if response.status_code == 200:

@@ -2,7 +2,7 @@ polars
 numpy
 requests
 scikit-learn
-statsmodels>=0.14.0
+statsmodels
 tensorflow
 matplotlib
 joblib
