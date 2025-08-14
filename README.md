@@ -33,18 +33,14 @@ This project implements a machine learning-based prediction system for item pric
 ## Project Structure
 
 ```
-©À©¤©¤ main.py                 # Main CLI script for integrated price prediction
-©À©¤©¤ collect.py             # Data collection script
-©À©¤©¤ models/
-©¦   ©À©¤©¤ arima_model.py     # ARIMA model implementation
-©¦   ©À©¤©¤ lstm_model.py      # LSTM model implementation
-©¦   ©À©¤©¤ vecm_model.py      # VECM model implementation
-©¦   ©¸©¤©¤ constant_model.py  # Constant/Naive model for stable prices
-©À©¤©¤ utils/
-©¦   ©À©¤©¤ data_processing.py # Data processing utilities
-©¦   ©À©¤©¤ datetime_utils.py  # DateTime handling utilities
-©¦   ©¸©¤©¤ plotting.py        # Plotting utilities
-©¸©¤©¤ requirements.txt       # Python package dependencies
+Skyblock_Price_Prediction/
+â”œâ”€â”€ cli.py               # Price prediction CLI tool
+â”œâ”€â”€ collect.py           # Data collection script
+â”œâ”€â”€ README.md            # Project documentation (this file)
+â”œâ”€â”€ requirements.txt     # Python dependencies
+â”œâ”€â”€ integrated_models/   # Saved machine learning models
+â”œâ”€â”€ integrated_plots/    # Generated price prediction plots
+â””â”€â”€ integrated_predictions/  # JSON prediction results
 ```
 
 ## Usage
